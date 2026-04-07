@@ -33,6 +33,8 @@ const action: Action = {
       return;
     }
 
+    await query.send(Messages.ACTIVITY.GETTING_INFO);
+
     const response = await wrapper.GetActivityBaseInfo(activityId);
     if (!response?.isSuccess) {
       await query.message.reply(
@@ -43,7 +45,6 @@ const action: Action = {
 
     const activity = response.entity;
     const text = Messages.DISCIPLINES.ACTIVITY_INFO(activity);
-
     const keyboard = new InlineKeyboardBuilder();
 
     if (activity.isShowQrGenerator) {
@@ -59,7 +60,6 @@ const action: Action = {
       ),
     );
 
-    await query.send("");
     await query.message.edit(text, {
       parseMode: "HTML",
       replyMarkup: keyboard,

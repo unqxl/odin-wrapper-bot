@@ -33,6 +33,8 @@ const action: Action = {
       return;
     }
 
+    await query.send(Messages.DISCIPLINES.GETTING_ACTIVITIES);
+
     let activityList = client.getActivityCache(author.id, disciplineId);
     if (!activityList) {
       const activities = await wrapper.GetDisciplineActivities(disciplineId);
@@ -41,7 +43,7 @@ const action: Action = {
     }
 
     const { text, totalPages, currentPage, slice } =
-      Messages.DISCIPLINES.ACTIVITIES_LIST(activityList, page, disciplineId);
+      Messages.DISCIPLINES.ACTIVITIES_LIST(activityList, page);
 
     const keyboard = new InlineKeyboardBuilder();
     for (const activity of slice) {
@@ -81,7 +83,6 @@ const action: Action = {
 
     keyboard.row(InlineKeyboardBuilder.text("К дисциплинам", "disciplines"));
 
-    await query.send("");
     await query.message.edit(text, {
       parseMode: "HTML",
       replyMarkup: keyboard,

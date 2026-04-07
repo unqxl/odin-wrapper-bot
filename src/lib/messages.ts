@@ -188,6 +188,8 @@ const Messages = {
 
   DISCIPLINES: {
     GETTING_DISCIPLINES: "Получение списка дисциплин, пожалуйста, подождите...",
+    GETTING_ACTIVITIES:
+      "Получение списка активностей, пожалуйста, подождите...",
 
     DISCIPLINES_LIST: (disciplines: DisciplineEntity[]) => {
       if (!disciplines.length) {
@@ -211,7 +213,6 @@ const Messages = {
     ACTIVITIES_LIST: (
       activities: ActivityListWithStatusEntity[],
       page: number,
-      disciplineId: number,
     ) => {
       const PAGE_SIZE = 5;
       const totalPages = Math.max(1, Math.ceil(activities.length / PAGE_SIZE));
@@ -222,7 +223,11 @@ const Messages = {
       );
 
       if (!slice.length) {
-        return { text: "У этой дисциплины нет активностей.", totalPages: 1, currentPage: 1 };
+        return {
+          text: "У этой дисциплины нет активностей.",
+          totalPages: 1,
+          currentPage: 1,
+        };
       }
 
       const offset = (currentPage - 1) * PAGE_SIZE;
@@ -269,6 +274,15 @@ const Messages = {
         → Конец: <strong>${fmt(activity.endDateTime)}</strong>
       `;
     },
+  },
+
+  ACTIVITY: {
+    GETTING_INFO:
+      "Получение информации об активности, пожалуйста, подождите...",
+  },
+
+  QR: {
+    GETTING_QR: "Получение QR-кода, пожалуйста, подождите...",
   },
 };
 

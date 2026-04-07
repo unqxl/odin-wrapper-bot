@@ -27,6 +27,8 @@ const action: Action = {
       return;
     }
 
+    await query.send(Messages.QR.GETTING_QR);
+
     const response = await wrapper.GetActivityQrCode(activityId);
     if (!response?.isSuccess) {
       await query.message.reply("Не удалось получить QR-код.");
@@ -39,8 +41,8 @@ const action: Action = {
     );
     const buffer = Buffer.from(base64Data, "base64");
 
-    await query.send("");
     await client.sendPhoto({
+      hasSpoiler: true,
       chatId: query.message.chat.id,
       photo: buffer,
     });
