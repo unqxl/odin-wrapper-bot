@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    // TypeScript & JavaScript
+    "esbenp.prettier-vscode",
+    "usernamehw.errorlens",
+
+    // Prisma
+    "prisma.prisma",
+
+    // Code Quality
+    "aaron-bond.better-comments",
+
+    // Utilities
+    "christian-kohler.path-intellisense"
+  ]
+}
