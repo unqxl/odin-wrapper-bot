@@ -1,5 +1,6 @@
 import {
   ActivityListWithStatusEntity,
+  ActivityBaseInfoEntity,
   CurrentUserInfoEntity,
   NearestActivityEntity,
   CurrentInfoEntity,
@@ -246,7 +247,27 @@ const Messages = {
 
       const text = `<strong>Активности дисциплины</strong> (стр. ${currentPage}/${totalPages}):\n\n${activitiesList}`;
 
-      return { text, totalPages, currentPage };
+      return { text, totalPages, currentPage, slice };
+    },
+
+    ACTIVITY_INFO: (activity: ActivityBaseInfoEntity) => {
+      const name = activity.name.replaceAll("_", "");
+
+      const fmt = (dt: string) =>
+        new Date(dt).toLocaleString("ru-RU", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+      return stripIndent`
+        <strong>${name}</strong>
+
+        → Начало: <strong>${fmt(activity.startDateTime)}</strong>
+        → Конец: <strong>${fmt(activity.endDateTime)}</strong>
+      `;
     },
   },
 };

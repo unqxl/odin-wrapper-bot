@@ -52,6 +52,8 @@ export type NearestActivityResponse = BaseResponse<{ items: NearestActivityEntit
 export type StudentTasksResponse = BasePagedResponse<StudentTaskEntity>;
 export type DisciplinesResponse = BaseResponse<{ items: DisciplineEntity[] }>;
 export type DisciplineActivitiesResponse = BaseResponse<DisciplineActivityEntity>; // prettier-ignore
+export type ActivityBaseInfoResponse = BaseResponse<ActivityBaseInfoEntity>;
+export type ActivityQrCodeResponse = BaseResponse<{ value: string }>;
 
 export type CurrentInfoEntity = {
   id: number;
@@ -178,4 +180,87 @@ export type DisciplineActivityEntity = {
   activityList: ActivityListEntity[];
   themeList: any[];
   moduleList: ModuleListEntity[];
+};
+
+export type ActivityBaseInfoEntity = {
+  id: number;
+  name: string;
+  cohortId: number;
+  cohortStartEducationDateTime: string;
+  disciplineId: number;
+  disciplineName: string;
+  type: number;
+  typeName: string;
+  activityDataViewPermissionInfo: {
+    canViewDetail: number;
+    isCanViewSummary: boolean;
+    isTemporaryDenied: boolean;
+    deniedReasonText: string[];
+  };
+  canViewDataAccess: number;
+  startDateTime: string;
+  endDateTime: string;
+  disciplineStartDateTime: string;
+  duration: number;
+  description: string;
+  meetingType: number;
+  permissions: {
+    currentIsActivityStudent: boolean;
+    canStudentLearnContent: boolean;
+    currentCanEditActivity: boolean;
+    currentIsSuperAdministrator: boolean;
+    showActivityStatusBlock: boolean;
+    canViewSolutions: boolean;
+    canCreatePlan: boolean;
+    canViewCompletion: boolean;
+    isActivityCompletionAllowed: boolean;
+    currentCanManageUavExtensionsReport: boolean;
+    currentCanViewUavExtensionsReport: boolean;
+    canDoTask: boolean;
+  };
+  teachers: {
+    id: number;
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    photoUrl?: string;
+  }[];
+  defaultChatId: number;
+  isDisabledChat: boolean;
+  breadcrumbs: {
+    routePage: number;
+    entityId: number;
+    text: string;
+  }[];
+  isCallsEnabled: boolean;
+  isCallInOdin: boolean;
+  activeCallId: number;
+  allStudentSolutions: number;
+  studentsInTotal: number;
+  studentHasSolution: boolean;
+  isCriterionAssessment: boolean;
+  isHiddenInMarksTable: boolean;
+  knowledgeTags: unknown[];
+  rating: {
+    currentMark: number;
+    rating: number;
+    canRate: boolean;
+    marksCount: number;
+  };
+  isFinalAttestation: boolean;
+  isUavFinalAttestation: boolean;
+  addresses: unknown[];
+  isLinearAccessEnabled: boolean;
+  isNeedSaveContentStatistics: boolean;
+  isInMigrationExam: boolean;
+  isUavProject: boolean;
+  isExtracurricularCourse: boolean;
+  isNeedStatistic: boolean;
+  canHaveUavPracticalReport: boolean;
+  canHaveUavExtensionsReport: boolean;
+  uavMaxTaskDurationSeconds: number;
+  isShowQrGenerator: boolean;
+  isCodeOfFuture2025WithAdaptationTheme: boolean;
+  isWaitingToVisitForFinishActivity: boolean;
+  isRequiredU2035Activity: boolean;
 };

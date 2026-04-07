@@ -12,6 +12,8 @@ import {
   DisciplinesResponse,
   CuratorsResponse,
   LoginResponse,
+  ActivityBaseInfoResponse,
+  ActivityQrCodeResponse,
 } from "@src/lib/types";
 import { AxiosInstance, AxiosResponse } from "axios";
 
@@ -153,6 +155,38 @@ class OdinWrapper {
       );
     } catch (error) {
       console.error("Error fetching discipline activities:", error);
+    }
+
+    return response?.data;
+  }
+
+  async GetActivityBaseInfo(activityId: number) {
+    var response: AxiosResponse<ActivityBaseInfoResponse, any, {}>;
+    try {
+      response = await this.client.get<ActivityBaseInfoResponse>(
+        `/api/Activity/BaseInfo`,
+        {
+          params: { activityId },
+        },
+      );
+    } catch (error) {
+      console.error("Error fetching activity base info:", error);
+    }
+
+    return response?.data;
+  }
+
+  async GetActivityQrCode(activityId: number) {
+    var response: AxiosResponse<ActivityQrCodeResponse, any, {}>;
+    try {
+      response = await this.client.get<ActivityQrCodeResponse>(
+        `/api/Activity/GetQrCode`,
+        {
+          params: { activityId },
+        },
+      );
+    } catch (error) {
+      console.error("Error fetching activity QR code:", error);
     }
 
     return response?.data;

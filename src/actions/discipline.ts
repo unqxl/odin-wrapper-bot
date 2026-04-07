@@ -40,10 +40,23 @@ const action: Action = {
       client.setActivityCache(author.id, disciplineId, activityList);
     }
 
-    const { text, totalPages, currentPage } =
+    const { text, totalPages, currentPage, slice } =
       Messages.DISCIPLINES.ACTIVITIES_LIST(activityList, page, disciplineId);
 
     const keyboard = new InlineKeyboardBuilder();
+    for (const activity of slice) {
+      const label =
+        activity.name.length > 50
+          ? activity.name.slice(0, 47) + "..."
+          : activity.name;
+
+      keyboard.row(
+        InlineKeyboardBuilder.text(
+          label,
+          `activity_${activity.id}_${disciplineId}_${currentPage}`,
+        ),
+      );
+    }
 
     const navButtons: ReturnType<typeof InlineKeyboardBuilder.text>[] = [];
     if (currentPage > 1) {
