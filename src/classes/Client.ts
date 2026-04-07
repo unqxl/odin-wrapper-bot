@@ -24,7 +24,20 @@ class Client extends TelegramClient {
     const user = await this.database.user.findUnique({ where: { userId } });
     if (!user?.cookies) return null;
 
-    const wrapper = new OdinWrapper(user.cookies, user.token ?? undefined);
+    const wrapper = new OdinWrapper({
+      serializedCookies: user.cookies,
+      token: user.token ?? undefined,
+      email: user.email ?? undefined,
+      password: user.password ?? undefined,
+    });
+
+    wrapper.onTokenRefresh = async (newToken: string) => {
+      await this.database.user.update({
+        where: { userId },
+        data: { token: newToken },
+      });
+    };
+
     this.wrappers.set(userId, wrapper);
 
     return wrapper;

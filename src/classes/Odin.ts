@@ -5,23 +5,37 @@ import Axios from "axios";
 //? Types
 import {
   DisciplineActivitiesResponse,
+  ActivityBaseInfoResponse,
   CurrentUserInfoResponse,
   NearestActivityResponse,
+  ActivityQrCodeResponse,
   StudentTasksResponse,
   CurrentInfoResponse,
   DisciplinesResponse,
   CuratorsResponse,
   LoginResponse,
-  ActivityBaseInfoResponse,
-  ActivityQrCodeResponse,
 } from "@src/lib/types";
 import { AxiosInstance, AxiosResponse } from "axios";
 
+type OdinWrapperOptions = {
+  serializedCookies?: string;
+  token?: string;
+  email?: string;
+  password?: string;
+};
+
 class OdinWrapper {
-  public client: AxiosInstance;
+  private client: AxiosInstance;
   private jar: CookieJar;
 
-  constructor(serializedCookies?: string, token?: string) {
+  private email?: string;
+  private password?: string;
+
+  public onTokenRefresh?: (token: string) => Promise<void>;
+
+  constructor(options?: OdinWrapperOptions) {
+    const { serializedCookies, token, email, password } = options ?? {};
+
     this.jar = serializedCookies
       ? CookieJar.deserializeSync(JSON.parse(serializedCookies))
       : new CookieJar();
@@ -32,6 +46,42 @@ class OdinWrapper {
         baseURL: "https://odin.study",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       }),
+    );
+
+    this.email = email;
+    this.password = password;
+
+    this.setupInterceptors();
+  }
+
+  private setupInterceptors() {
+    this.client.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+
+        if (
+          error.response?.status === 401 &&
+          !originalRequest._retry &&
+          this.email &&
+          this.password
+        ) {
+          originalRequest._retry = true;
+
+          const loginData = await this.TryLogin(this.email, this.password);
+          const newToken = loginData?.entity?.token;
+
+          if (newToken) {
+            this.setToken(newToken);
+            originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+
+            await this.onTokenRefresh?.(newToken);
+            return this.client(originalRequest);
+          }
+        }
+
+        return Promise.reject(error);
+      },
     );
   }
 
