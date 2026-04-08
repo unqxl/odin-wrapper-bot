@@ -14,6 +14,7 @@ import {
   DisciplinesResponse,
   CuratorsResponse,
   LoginResponse,
+  BaseResponse,
 } from "@src/lib/types";
 import { AxiosInstance, AxiosResponse } from "axios";
 
@@ -237,6 +238,23 @@ class OdinWrapper {
       );
     } catch (error) {
       console.error("Error fetching activity QR code:", error);
+    }
+
+    return response?.data;
+  }
+
+  async MarkActivityAsPassed(activityId: number) {
+    var response: AxiosResponse<BaseResponse<null>, any, {}>;
+    try {
+      response = await this.client.post<BaseResponse<null>>(
+        `/api/Activity/MarkActivityAsPassed`,
+        null,
+        {
+          params: { id: activityId },
+        },
+      );
+    } catch (error) {
+      console.error("Error marking activity as passed:", error);
     }
 
     return response?.data;

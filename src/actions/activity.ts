@@ -1,5 +1,5 @@
 import { InlineKeyboardBuilder } from "telegramsjs";
-import { Action } from "@src/lib/types";
+import { Action, ActivityType } from "@src/lib/types";
 import Messages from "@src/lib/messages";
 
 const action: Action = {
@@ -46,6 +46,19 @@ const action: Action = {
     const activity = response.entity;
     const text = Messages.DISCIPLINES.ACTIVITY_INFO(activity);
     const keyboard = new InlineKeyboardBuilder();
+
+    if (
+      activity.permissions.isActivityCompletionAllowed &&
+      ![ActivityType.Test, ActivityType.Task].includes(activity.type) &&
+      !activity.isWaitingToVisitForFinishActivity
+    ) {
+      keyboard.row(
+        InlineKeyboardBuilder.text(
+          "Завершить активность",
+          `complete_${activityId}`,
+        ),
+      );
+    }
 
     if (activity.isShowQrGenerator) {
       keyboard.row(

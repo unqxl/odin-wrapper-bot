@@ -264,3 +264,17 @@ export type ActivityBaseInfoEntity = {
   isWaitingToVisitForFinishActivity: boolean;
   isRequiredU2035Activity: boolean;
 };
+
+export enum ActivityType {
+  Lecture = 1,
+  Seminar = 2,
+  Practice = 3,
+  LaboratoryWork = 4,
+  IndividualWork = 5,
+  Task = 6,
+  Test = 7,
+  Other = 8,
+  Consultation = 9,
+  Forum = 10,
+  CodeTask = 11,
+}
