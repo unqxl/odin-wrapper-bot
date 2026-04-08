@@ -13,3 +13,8 @@ export async function createCollector(
 export function hashText(text: string) {
   return crypto.createHash("sha256").update(text).digest("hex");
 }
+
+export function truncateText(text: string, maxLength: number) {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength - 3) + "...";
+}

@@ -1,6 +1,7 @@
 import { InlineKeyboardBuilder } from "telegramsjs";
 import { Action } from "@src/lib/types";
 import Messages from "@src/lib/messages";
+import { truncateText } from "@src/lib/utils";
 
 const action: Action = {
   name: "discipline",
@@ -46,11 +47,11 @@ const action: Action = {
       Messages.DISCIPLINES.ACTIVITIES_LIST(activityList, page);
 
     const keyboard = new InlineKeyboardBuilder();
-    for (const activity of slice) {
-      const label =
-        activity.name.length > 50
-          ? activity.name.slice(0, 47) + "..."
-          : activity.name;
+    for (let i = 0; i < slice.length; i++) {
+      const activity = slice[i];
+
+      const id = i + (currentPage - 1) * 5;
+      const label = truncateText(`${id + 1}. ${activity.name}`, 40);
 
       keyboard.row(
         InlineKeyboardBuilder.text(
