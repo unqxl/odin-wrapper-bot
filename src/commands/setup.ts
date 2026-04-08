@@ -48,7 +48,7 @@ const command: Command = {
 
     const login_result = await userWrapper.TryLogin(email, password);
     if (!login_result.isSuccess) {
-      await pass_res.reply(Messages.SETUP.LOGIN_FAILED);
+      await pass_res.reply(Messages.SETUP.LOGIN_FAILED, { parseMode: "HTML" });
       return;
     }
 
