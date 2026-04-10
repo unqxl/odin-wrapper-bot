@@ -48,7 +48,7 @@ const action: Action = {
     const keyboard = new InlineKeyboardBuilder();
 
     if (
-      activity.permissions.isActivityCompletionAllowed &&
+      activity.permissions?.isActivityCompletionAllowed &&
       ![ActivityType.Test, ActivityType.Task].includes(activity.type) &&
       !activity.isWaitingToVisitForFinishActivity
     ) {
